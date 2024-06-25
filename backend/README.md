@@ -1,0 +1,1 @@
+use `/requests/delete_test.request` to send delete the 4th person information.

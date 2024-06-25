@@ -1,0 +1,20 @@
+POST http://localhost:3001/api/persons/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name" : "test",
+  "number" : "123456789"
+}
+
+### posting an existing name
+POST http://localhost:3001/api/persons/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name" : "Arto Hellas",
+  "number" : "123456789"
+}
+
+### posting non-existing name
+POST http://localhost:3001/api/persons/ HTTP/1.1
+Content-Type: application/json
