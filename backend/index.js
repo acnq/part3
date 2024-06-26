@@ -7,15 +7,15 @@ const app = express()
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)
 
-  if (error.name == 'CastError') {
+  if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
-  } else if (error.name == 'ValidationError') {
+  } else if (error.name === 'ValidationError') {
     return response.status(400).json({ error: error.message })
   }
   next(error)
 }
 const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint'})
+  response.status(404).send({ error: 'unknown endpoint' })
 }
 
 app.use(express.json())
@@ -35,24 +35,24 @@ app.use(morgan(function (tokens, req, res) {
 // const range = 10000
 
 // let persons = [
-//   { 
+//   {
 //     "id": "1",
-//     "name": "Arto Hellas", 
+//     "name": "Arto Hellas",
 //     "number": "040-123456"
 //   },
-//   { 
+//   {
 //     "id": "2",
-//     "name": "Ada Lovelace", 
+//     "name": "Ada Lovelace",
 //     "number": "39-44-5323523"
 //   },
-//   { 
+//   {
 //     "id": "3",
-//     "name": "Dan Abramov", 
+//     "name": "Dan Abramov",
 //     "number": "12-43-234345"
 //   },
-//   { 
+//   {
 //     "id": "4",
-//     "name": "Mary Poppendieck", 
+//     "name": "Mary Poppendieck",
 //     "number": "39-23-6423122"
 //   }
 // ]
@@ -76,22 +76,22 @@ app.get('/api/persons', (request, response) => {
 app.get('/api/persons/:id', (request, response, next) => {
   const id = request.params.id
   People.findById(id)
-        .then(person => {
-          if (person) {
-            response.json(person)
-          } else {
-            response.status(404).end()
-          }
-        })
-        .catch(error => next(error))
+    .then(person => {
+      if (person) {
+        response.json(person)
+      } else {
+        response.status(404).end()
+      }
+    })
+    .catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
   People.findByIdAndDelete(request.params.id)
-        .then(result => {
-          response.status(204).end()
-        })
-        .catch(error => next(error))
+    .then(() => {
+      response.status(204).end()
+    })
+    .catch(error => next(error))
 })
 
 // const generateId = () => {
@@ -115,7 +115,6 @@ app.post('/api/persons', (request, response, next) => {
   //     error: 'name must be unique'
   //   })
   // }
-  
   const person = new People({
     name: body.name,
     number: body.number,
@@ -135,14 +134,14 @@ app.put('/api/persons/:id', (request, response, next) => {
   }
 
   People.findByIdAndUpdate(
-    request.params.id, 
-    person, 
+    request.params.id,
+    person,
     { new: true, runValidators: true, context: 'query' }
   )
-        .then(result => {
-          response.json(result)
-        })
-        .catch(error => next(error))
+    .then(result => {
+      response.json(result)
+    })
+    .catch(error => next(error))
 })
 
 app.use(unknownEndpoint)
